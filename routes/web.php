@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -63,3 +64,33 @@ Route::get('blade',function(){
     return view('pages.php');
 });
 Route::get('bladeTemplate/{str}','MyController@blade');
+//database
+Route::get('database',function(){
+    // Schema::create('loaisanpham',function($table){
+    //     $table->increments('id');
+    //     $table->string('ten',200);
+    // });
+    Schema::create('theloai',function($table){
+        $table->increments('id');
+        $table->string('ten',200)->nullable();
+        $table->string('nsx')->default('Nha san xuat');
+    });
+    echo "Da thuc hien tao bang";
+});
+Route::get('lienketbang',function(){
+    Schema::create('sanpham',function($table){
+        $table->increments('id');
+        $table->string('ten');
+        $table->float('gia');
+        $table->integer('soluong')->default(0);
+        $table->integer('id_loaisanpham')->unsigned();
+        $table->foreign('id_loaisanpham')->references('id')->on('loaisanpham');
+    });
+});
+Route::get('doitenbang',function(){
+    Schema::rename('theloai','TheLoai1');
+    echo "da doi ten bang";
+});
+Route::get('xoabang',function(){
+    Schema::drop('theloai1');
+});
