@@ -94,3 +94,70 @@ Route::get('doitenbang',function(){
 Route::get('xoabang',function(){
     Schema::drop('theloai1');
 });
+//query builder
+Route::get('qb/get',function(){
+    $data = DB::table('users')->get();
+    // var_dump($data);
+    foreach($data as $row)
+    {
+        foreach($row as $key=>$value)
+        {
+            echo $key.":".$value."<br>";
+        }
+        echo "<hr>";
+    }
+
+});
+// select * from users where id = 2
+Route::get('qb/where',function(){
+    $data1 = DB::table('users')->max('id');   
+    // var_dump($data);
+    $data=DB::table('users')->orderBy('id','desc')->select('id','name')->first();
+    // foreach($data as $key=>$value)
+    // {
+    //     echo $key.":".$value;
+    // }
+    // echo "<br>";
+    // echo $data;
+    // foreach($data as $row)
+    // {
+        foreach($data as $key=>$value)
+        {
+            echo $key.":".$value."<br>";
+        }
+        echo "<hr>";
+    // }
+});
+Route::get('qb/update',function(){
+    DB::table('sanpham')->where('ten','long')->update(['ten'=>'nokia']);
+    echo "Da update";
+});
+//Model
+Route::get('model/save',function(){
+    $user = new App\User();
+    $user->name = "Mai";
+    $user->email="Mai@gmail.com";
+    $user->password="Mat khau";
+    $user->save();
+    echo "da save";
+});
+Route::get('model/query',function(){
+    $user = App\User::find(5);
+    echo $user->name;
+});
+Route::get('model/sanpham/save/{ten}',function($ten){
+    $sanpham = new App\sanpham();
+    $sanpham->ten= $ten ;
+    $sanpham->soluong =  100;
+    $sanpham->save();
+    echo "da save";
+});
+Route::get('model/sanpham/all',function(){
+    $sanpham = App\sanpham::where('ten','xiami')->get()->toArray();
+    echo $sanpham[0]['ten'];
+});
+Route::get('taocot',function(){
+    Schema::table('sanpham',function($table){
+        $table->integer('id_loaisanpham')->unsigned();
+    });
+});

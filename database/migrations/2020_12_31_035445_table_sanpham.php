@@ -14,6 +14,12 @@ class TableSanpham extends Migration
     public function up()
     {
         //
+        Schema::create('sanpham',function($table){
+            $table->increments('id');
+            $table->string('ten');
+            $table->integer('soluong');
+
+        });
     }
 
     /**
@@ -24,5 +30,6 @@ class TableSanpham extends Migration
     public function down()
     {
         //
+        Schema::drop('sanpham');
     }
 }
